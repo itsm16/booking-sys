@@ -41,38 +41,16 @@ const getBookingById = async (id) => {
     return result.rows[0];
 }
 
-const createBooking = async ({userId, seatOne, seatTwo}) => {
+const createBooking = async ({userId, seat}) => {
     const conn = await pool.connect();
     await conn.query("BEGIN");
 
-    const bookedSql = "SELECT * FROM bookings WHERE user_id = $1";
-    const bookedResult = await conn.query(bookedSql, [userId]);
-    
-    if (bookedResult.rows.length == 2) {
-        throw ApiError.conflict("User already has 2 bookings");
-    }
-
-    if(seatTwo && bookedResult.rows.length == 1) {
-        throw ApiError.conflict("User already has a booking and cannot book 2 seats");
-    }
-
-    const checkSql = "SELECT * FROM seats WHERE id IN ($1, $2) AND is_booked = false";
-    const checkResult = await conn.query(checkSql, [seatOne, seatTwo]);
-
     const sql = "INSERT into bookings (user_id, seat_id) values ($1, $2)";
-    const result = await conn.query(sql, [userId, seatOne]);
-
-    if (seatTwo && checkResult.rows.length < 2) {
-        await conn.query(sql, [userId, seatTwo]);
-    }
+    const result = await conn.query(sql, [userId, seat]);
 
     await conn.query("COMMIT");
 
-    await updateSeat(seatOne, true);
-
-    if (seatTwo) {
-        await updateSeat(seatTwo, true);
-    }
+    await updateSeat(seat, true);
 
     return result.rows[0];
 }
