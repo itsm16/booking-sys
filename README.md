@@ -1,6 +1,6 @@
 
 - Environment Variables
-    - SALT_ROUNDS=10
-    - JWT_SECRET=somesecretkey
-    - EXPIRE_TIME=2d
+    - SALT_ROUNDS=
+    - JWT_SECRET=
+    - EXPIRE_TIME=
     - DATABASE_URL=
