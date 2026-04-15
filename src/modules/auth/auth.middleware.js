@@ -23,7 +23,9 @@ const authenticateToken = async (req, res, next) => {
             throw ApiError.unauthorized("User not found");
         }
 
-        req.user = user;
+        const { password, ...userWithoutPassword } = user;
+
+        req.user = userWithoutPassword;
         next();
     } catch (error) {
         throw ApiError.unauthorized("Invalid or expired token");

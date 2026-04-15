@@ -24,8 +24,13 @@ const logout = async (req, res) => {
     ApiResponse.ok(res, "Logout successful");
 }
 
+const getMe = async (req, res) => {
+    ApiResponse.ok(res, "User found", req.user);
+}
+
 export {
     register,
     login,
-    logout
+    logout,
+    getMe
 }

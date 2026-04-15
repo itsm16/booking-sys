@@ -11,7 +11,25 @@ const getSeats = async (req, res) => {
     ApiResponse.ok(res, "Available seats", seats)
 }
 
+const getUserBookings = async (req, res) => {
+    const booking = await bookingService.getUserBookings(req.params.id)
+    ApiResponse.ok(res, "Booking found", booking)
+}
+
+const cancelBooking = async (req, res) => {
+    const cancel = await bookingService.cancelBooking(req.params.id)
+    ApiResponse.ok(res, "Booking cancelled", cancel)
+}
+
+const cancelSeat = async (req, res) => {
+    const cancel = await bookingService.cancelSeat(req.params.id)
+    ApiResponse.ok(res, "Seat cancelled", cancel)
+}
+
 export {
     book,
-    getSeats
+    getSeats,
+    getUserBookings,
+    cancelBooking,
+    cancelSeat
 }

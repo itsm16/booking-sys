@@ -1,3 +1,4 @@
+import ApiError from "../utils/api-error.js"
 
 const validate = (DtoClass) => {
     return (req, res, next) => {
@@ -5,7 +6,11 @@ const validate = (DtoClass) => {
 
         if(errors){
             const errorMessage = errors.join("; ")
-            // throw ApiError.badReuqest("", errorMessage)
+            if(Array.isArray(errors)){
+                const errorMessage = errors.map(err => err.message)
+                throw ApiError.badRequest(errorMessage)
+            }
+            throw ApiError.badRequest(errorMessage)
         }
 
         req.body = data
